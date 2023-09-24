@@ -1,0 +1,12 @@
+main:
+  - title: "About"
+    url: /about/
+
+sidebar:
+  nav: "docs"
+
+docs:
+  - title: Developing
+    children:
+      - title: "Terraform"
+        url: /categories/terraform/
