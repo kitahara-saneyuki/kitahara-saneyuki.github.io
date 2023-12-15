@@ -63,11 +63,13 @@ index-url=https://pypi.tuna.tsinghua.edu.cn/simple
 trusted-host=pypi.tuna.tsinghua.edu.cn
 ```
 
-### docker
-
 ### npm
 
+### docker
+
 ## 在shell终端使用科学上网工具
+
+### Ubuntu环境下
 
 我们在这里使用久不更新的Clash Verge[^2]。
 
@@ -78,13 +80,28 @@ export http_proxy=http://127.0.0.1:7890
 export https_proxy=http://127.0.0.1:7890
 ```
 
+在Clash Verge客户端GUI中开启`局域网链接`（Allow LAN）和`系统代理`（System Proxy）即可。
+
+### WSL2 Ubuntu环境下
+
 ## 一些题外话：配置Kubuntu 23.10工作机
 
 系统环境：一台老掉牙的Thinkpad T480s
 
 ### VSCodium使用VSCode Marketplace
 
+根据VSCodium官网教程，在`~/.config/VSCodium/`文件夹下新建文件`product.json`，键入以下内容并保存
 
+```json
+{
+  "extensionsGallery": {
+    "serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery",
+    "itemUrl": "https://marketplace.visualstudio.com/items",
+    "cacheUrl": "https://vscode.blob.core.windows.net/gallery/index",
+    "controlUrl": ""
+  }
+}
+```
 
 ### 指纹识别登录系统
 
