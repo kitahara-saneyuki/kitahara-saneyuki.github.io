@@ -34,18 +34,18 @@ sudo gedit /etc/apt/sources.list
 建议对不同源进行测速，在笔者个人的网络环境下，发现中科大源最快。
 
 ```
-deb https://mirrors.ustc.edu.cn/ubuntu/ jammy main restricted universe multiverse
-# deb-src https://mirrors.ustc.edu.cn/ubuntu/ jammy main restricted universe multiverse
-deb https://mirrors.ustc.edu.cn/ubuntu/ jammy-security main restricted universe multiverse
-# deb-src https://mirrors.ustc.edu.cn/ubuntu/ jammy-security main restricted universe multiverse
-deb https://mirrors.ustc.edu.cn/ubuntu/ jammy-updates main restricted universe multiverse
-# deb-src https://mirrors.ustc.edu.cn/ubuntu/ jammy-updates main restricted universe multiverse
-deb https://mirrors.ustc.edu.cn/ubuntu/ jammy-backports main restricted universe multiverse
-# deb-src https://mirrors.ustc.edu.cn/ubuntu/ jammy-backports main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-security main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-security main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-updates main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-updates main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-backports main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-backports main restricted universe multiverse
 
 # 预发布软件源，不建议启用
-deb https://mirrors.ustc.edu.cn/ubuntu/ jammy-proposed main restricted universe multiverse
-# deb-src https://mirrors.ustc.edu.cn/ubuntu/ jammy-proposed main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-proposed main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-proposed main restricted universe multiverse
 ```
 
 对于Ubuntu 23.10，将`jammy`替换成`mantic`即可。
@@ -54,17 +54,36 @@ deb https://mirrors.ustc.edu.cn/ubuntu/ jammy-proposed main restricted universe 
 
 ### pip
 
-## 科学上网工具
+创建`~/.pip`文件夹，在该文件夹下`pip.conf`文件，键入如下代码：
+
+```conf
+[global]
+index-url=https://pypi.tuna.tsinghua.edu.cn/simple
+[install]
+trusted-host=pypi.tuna.tsinghua.edu.cn
+```
+
+### docker
+
+### npm
+
+## 在shell终端使用科学上网工具
 
 我们在这里使用久不更新的Clash Verge[^2]。
 
+在`~/.bashrc`末尾插入两行shell命令：
 
+```bash
+export http_proxy=http://127.0.0.1:7890
+export https_proxy=http://127.0.0.1:7890
+```
 
 ## 一些题外话：配置Kubuntu 23.10工作机
 
 系统环境：一台老掉牙的Thinkpad T480s
 
 ### VSCodium使用VSCode Marketplace
+
 
 
 ### 指纹识别登录系统
