@@ -105,6 +105,16 @@ export https_proxy=http://127.0.0.1:7890
 
 ### WSL2 Ubuntu环境下
 
+在`~/.bashrc`末尾插入两行shell命令：
+
+```bash
+export hostip=$(cat /etc/resolv.conf |grep -oP '(?<=nameserver\ ).*')
+export https_proxy="http://${hostip}:7890"
+export http_proxy="http://${hostip}:7890"
+```
+
+在Clash客户端GUI中开启`局域网链接`（Allow LAN）和`系统代理`（System Proxy）即可。
+
 ## 一些题外话：配置Kubuntu 23.10工作机
 
 系统环境：一台老掉牙的Thinkpad T480s
