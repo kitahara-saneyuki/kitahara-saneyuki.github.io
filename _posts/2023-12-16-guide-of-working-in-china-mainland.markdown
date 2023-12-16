@@ -54,7 +54,7 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-proposed main restricted 
 
 ### pip
 
-创建`~/.pip`文件夹，在该文件夹下`pip.conf`文件，键入如下代码：
+创建文件`~/.pip/pip.conf`，键入如下代码：
 
 ```conf
 [global]
@@ -66,6 +66,27 @@ trusted-host=pypi.tuna.tsinghua.edu.cn
 ### npm
 
 ### docker
+
+创建文件`/etc/docker/daemon.json`，键入以下代码并保存：
+
+```json
+{
+    "registry-mirrors": [
+        "https://registry.hub.docker.com",
+        "http://hub-mirror.c.163.com",
+        "https://mirror.baidubce.com",
+        "https://docker.mirrors.sjtug.sjtu.edu.cn",
+        "https://docker.nju.edu.cn"
+    ]
+}
+```
+
+键入以下命令以使之生效：
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
 
 ## 在shell终端使用科学上网工具
 
@@ -90,7 +111,7 @@ export https_proxy=http://127.0.0.1:7890
 
 ### VSCodium使用VSCode Marketplace
 
-根据VSCodium官网教程，在`~/.config/VSCodium/`文件夹下新建文件`product.json`，键入以下内容并保存
+根据VSCodium官网文档[^3]，创建文件`~/.config/VSCodium/product.json`，键入以下内容并保存
 
 ```json
 {
@@ -112,4 +133,5 @@ export https_proxy=http://127.0.0.1:7890
 
 [^1]: [Ubuntu 22.04 更换国内源 清华源 阿里源 中科大源 163源](https://www.linuxmi.com/ubuntu-22-04-apt-sources-list.html)
 [^2]: [Index of /clients/clash-verge/releases/latest/](https://dl.jichangzhu.com/clients/clash-verge/releases/latest/)
+[^3]: [VSCodium: How to use a different extension gallery](https://github.com/VSCodium/vscodium/blob/master/docs/index.md#how-to-use-a-different-extension-gallery)
 
