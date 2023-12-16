@@ -115,6 +115,10 @@ export http_proxy="http://${hostip}:7890"
 
 在Clash客户端GUI中开启`局域网链接`（Allow LAN）和`系统代理`（System Proxy）即可。
 
+### VSCodium / VSCode 使用Clash
+
+进入`文件 > 首选项 > 设置`，搜索`proxy`，键入`http://127.0.0.1:7890`
+
 ## 一些题外话：配置Kubuntu 23.10工作机
 
 系统环境：一台老掉牙的Thinkpad T480s
