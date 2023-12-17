@@ -20,7 +20,7 @@ published:  false
 - 笔电1：Kubuntu 23.10
 - 笔电2：Windows 10 + WSL2 + Ubuntu 22.04
 
-## 配置镜像站：apt、pip、docker、npm
+## 配置镜像站：apt、pip、docker、npm、cargo
 
 ### apt
 
@@ -63,7 +63,50 @@ index-url=https://pypi.tuna.tsinghua.edu.cn/simple
 trusted-host=pypi.tuna.tsinghua.edu.cn
 ```
 
+### cargo
+
+新建文件`$HOME/.cargo/config`，内容如下[^5]：
+
+```toml
+[source.crates-io]
+registry = "https://github.com/rust-lang/crates.io-index"
+# 指定镜像
+replace-with = 'sjtu' # 如：tuna、sjtu、ustc，或者 rustcc
+
+# 注：以下源配置一个即可，无需全部
+# 目前 sjtu 相对稳定些
+
+# 中国科学技术大学
+[source.ustc]
+registry = "https://mirrors.ustc.edu.cn/crates.io-index"
+
+# 上海交通大学
+[source.sjtu]
+registry = "https://mirrors.sjtug.sjtu.edu.cn/git/crates.io-index/"
+
+# 清华大学
+[source.tuna]
+registry = "https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git"
+
+# rustcc社区
+[source.rustcc]
+registry = "https://code.aliyun.com/rustcc/crates.io-index.git"
+```
+
 ### npm
+
+在终端键入命令[^4]：
+
+```bash
+# 查询源
+npm config get registry
+# 更换国内源
+npm config set registry https://registry.npm.taobao.org/
+# 恢复官方源
+npm config set registry https://registry.npmjs.org
+# 删除注册表
+npm config delete registry
+```
 
 ### docker
 
@@ -148,4 +191,5 @@ export http_proxy="http://${hostip}:7890"
 [^1]: [Ubuntu 22.04 更换国内源 清华源 阿里源 中科大源 163源](https://www.linuxmi.com/ubuntu-22-04-apt-sources-list.html)
 [^2]: [Index of /clients/clash-verge/releases/latest/](https://dl.jichangzhu.com/clients/clash-verge/releases/latest/)
 [^3]: [VSCodium: How to use a different extension gallery](https://github.com/VSCodium/vscodium/blob/master/docs/index.md#how-to-use-a-different-extension-gallery)
-
+[^4]: [国内npm源镜像（npm加速下载） 指定npm镜像](https://blog.csdn.net/qq_43940789/article/details/131449710)
+[^5]: [rustup、cargo设置为国内镜像](https://www.jianshu.com/p/17ca4c56fc5e)
