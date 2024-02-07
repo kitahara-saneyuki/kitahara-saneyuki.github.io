@@ -110,12 +110,15 @@ npm config delete registry
 
 ### docker
 
+#### Linux 环境下
+
 创建文件`/etc/docker/daemon.json`，键入以下代码并保存：
+
+（经过试验，在天津移动环境下，南京大学源较快）
 
 ```json
 {
     "registry-mirrors": [
-        "https://registry.hub.docker.com",
         "http://hub-mirror.c.163.com",
         "https://mirror.baidubce.com",
         "https://docker.mirrors.sjtug.sjtu.edu.cn",
@@ -131,24 +134,28 @@ sudo systemctl daemon-reload
 sudo systemctl restart docker
 ```
 
-## 在shell终端使用科学上网工具
+#### WSL2 Ubuntu 环境下
 
-### Ubuntu环境下
+双击任务栏中的 docker 图标，点击配置按钮（齿轮状），选择 docker engine ，将上述代码中的 `registry-mirrors` 项粘贴到配置 JSON 中
 
-我们在这里使用久不更新的Clash Verge[^2]。
+## 在 shell 终端使用科学上网工具
 
-在`~/.bashrc`末尾插入两行shell命令：
+### Linux 环境下
+
+我们在这里使用久不更新的 Clash Verge[^2]。
+
+在`~/.bashrc`末尾插入两行 shell 命令：
 
 ```bash
 export http_proxy=http://127.0.0.1:7890
 export https_proxy=http://127.0.0.1:7890
 ```
 
-在Clash Verge客户端GUI中开启`局域网链接`（Allow LAN）和`系统代理`（System Proxy）即可。
+在 Clash Verge 客户端 GUI 中开启`局域网链接`（ Allow LAN ）和`系统代理`（ System Proxy ）即可。
 
-### WSL2 Ubuntu环境下
+### WSL2 Ubuntu 环境下
 
-在`~/.bashrc`末尾插入两行shell命令：
+在`~/.bashrc`末尾插入两行 shell 命令：
 
 ```bash
 export hostip=$(cat /etc/resolv.conf |grep -oP '(?<=nameserver\ ).*')
