@@ -31,7 +31,7 @@ sudo mv /etc/apt/sources.list /etc/apt/sources.list.backup
 sudo gedit /etc/apt/sources.list
 ```
 
-建议对不同源进行测速，在笔者个人的网络环境下，发现中科大源最快。
+建议对不同源进行测速，在笔者个人的网络环境下，发现清华源最快。
 
 ```
 deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy main restricted universe multiverse
