@@ -119,9 +119,13 @@ npm config delete registry
 ```json
 {
     "registry-mirrors": [
-        "http://hub-mirror.c.163.com",
-        "https://mirror.baidubce.com",
+        "https://mirror.ccs.tencentyun.com",
+        "https://reg-mirror.qiniu.com",
+        "https://docker.mirrors.ustc.edu.cn",
+        "https://dockerhub.azk8s.cn",
         "https://docker.mirrors.sjtug.sjtu.edu.cn",
+        "https://mirror.baidubce.com",
+        "http://hub-mirror.c.163.com",
         "https://docker.nju.edu.cn"
     ]
 }
