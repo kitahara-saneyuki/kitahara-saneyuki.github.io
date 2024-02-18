@@ -3,7 +3,7 @@ layout:     single
 title:      "指南：如何对Linux和WSL Shell进行配置，高效利用国际互联网资源进行开发"
 date:       2023-12-16 03:37:14 +0800
 categories: Terraform
-published:  false
+published:  true
 ---
 
 # 指南：如何对Linux和WSL Shell进行配置，高效利用国际互联网资源进行开发
