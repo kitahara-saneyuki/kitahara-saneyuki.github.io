@@ -6,8 +6,6 @@ categories: Terraform
 published:  true
 ---
 
-# 指南：如何对Linux和WSL Shell进行配置，高效利用国际互联网资源进行开发
-
 **作者严正声明 Disclaimer：**
 
 **作者本人遵守中华人民共和国法律法规，坚定拥护中国共产党的领导，坚决拥护党的路线、方针、政策。**
@@ -172,32 +170,6 @@ export http_proxy="http://${hostip}:7890"
 ### VSCodium / VSCode 使用Clash
 
 进入`文件 > 首选项 > 设置`，搜索`proxy`，键入`http://127.0.0.1:7890`
-
-## 一些题外话：配置Kubuntu 23.10工作机
-
-系统环境：一台老掉牙的Thinkpad T480s
-
-### VSCodium使用VSCode Marketplace
-
-根据VSCodium官网文档[^3]，创建文件`~/.config/VSCodium/product.json`，键入以下内容并保存
-
-```json
-{
-  "extensionsGallery": {
-    "serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery",
-    "itemUrl": "https://marketplace.visualstudio.com/items",
-    "cacheUrl": "https://vscode.blob.core.windows.net/gallery/index",
-    "controlUrl": ""
-  }
-}
-```
-
-### 指纹识别登录系统
-
-
-### QQ和输入法
-
-
 
 [^1]: [Ubuntu 22.04 更换国内源 清华源 阿里源 中科大源 163源](https://www.linuxmi.com/ubuntu-22-04-apt-sources-list.html)
 [^2]: [Index of /clients/clash-verge/releases/latest/](https://dl.jichangzhu.com/clients/clash-verge/releases/latest/)
