@@ -57,8 +57,7 @@ sudo cp ./frp/frps.toml /etc/frp/frps.toml
 
 建立配置文件 `frps.service`
 
-```service
-# frps.toml
+```ini
 [Unit]
 Description=Frp Server Service
 After=network.target
@@ -116,7 +115,7 @@ sudo cp ./frp/frpc.toml /etc/frp/frpc.toml
 
 建立配置文件 `frpc.service`
 
-```service
+```ini
 [Unit]
 Description=Frp Client Service
 After=network.target
