@@ -14,7 +14,7 @@ published:  true
 
 配置环境：
 - 笔电1：Kubuntu 23.10
-- 笔电2：任何一个你能玩 VSCode 的平台，你如果足够吃多了撑的，可以在 iPad Pro 12.9 寸的屏幕上装个 UTM + Ubuntu + VSCode 跑
+- 笔电2：任何一个你能玩 VSCode 的平台
 
 ## 架设 ssh 服务器
 

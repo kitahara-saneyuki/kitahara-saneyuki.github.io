@@ -63,6 +63,7 @@ plugins:
   - jekyll-include-cache
   - jekyll-seo-tag
   - jekyll-mentions
+  - jekyll-archives
   - jekyll-multiple-languages-plugin
 
 defaults:
@@ -79,6 +80,16 @@ defaults:
       share: true
       related: true
       toc: true
+  - scope:
+      path: ""
+      type: tag
+    values:
+      author_profile: true
+  - scope:
+      path: ""
+      type: categories
+    values:
+      author_profile: true
 
 logo: "./assets/images/avatar.jpeg"
 breadcrumbs: true  # disabled by default
@@ -110,10 +121,21 @@ paginate_path: /articles/page:num/
 timezone: America/New_York
 
 category_archive:
-  type: liquid
+  type: jekyll-archives
   path: /categories/
 tag_archive:
-  type: liquid
+  type: jekyll-archives
   path: /tags/
+
+jekyll-archives:
+  enabled:
+    - categories
+    - tags
+  layouts:
+    category: archive-taxonomy
+    tag: archive-taxonomy
+  permalinks:
+    category: /categories/:name/
+    tag: /tags/:name/
 
 permalink: /:categories/:title/
