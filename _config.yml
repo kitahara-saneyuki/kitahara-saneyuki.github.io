@@ -73,6 +73,7 @@ defaults:
       type: posts
     values:
       layout: single
+      classes: wide
       show_date: true
       author_profile: true
       read_time: true
@@ -121,21 +122,10 @@ paginate_path: /articles/page:num/
 timezone: America/New_York
 
 category_archive:
-  type: jekyll-archives
+  type: liquid
   path: /categories/
 tag_archive:
-  type: jekyll-archives
+  type: liquid
   path: /tags/
-
-jekyll-archives:
-  enabled:
-    - categories
-    - tags
-  layouts:
-    category: archive-taxonomy
-    tag: archive-taxonomy
-  permalinks:
-    category: /categories/:name/
-    tag: /tags/:name/
 
 permalink: /:categories/:title/
