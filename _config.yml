@@ -27,7 +27,6 @@ description: >- # this means to ignore newlines until "baseurl:"
 baseurl: "" # the subpath of your site, e.g. /blog
 domain: kitahara-saneyuki.github.io       # if you want to force HTTPS, specify the domain without the http at the start, e.g. example.com
 url: https://kitahara-saneyuki.github.io  # the base hostname and protocol for your site, e.g. http://example.com
-github_username:  kitahara-saneyuki
 markdown: kramdown
 
 author:
@@ -39,18 +38,12 @@ author:
     - label: "HomeEazy"
       icon: "fas fa-fw fa-link"
       url: "https://homeeazy.com"
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/kitahara-saneyuki/"
 
 footer:
   links:
     - label: "HomeEazy"
       icon: "fas fa-fw fa-link"
       url: "https://homeeazy.com"
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/kitahara-saneyuki/"
 
 # Build settings
 remote_theme: "mmistakes/minimal-mistakes@4.24.0"
