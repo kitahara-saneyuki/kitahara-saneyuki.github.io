@@ -75,7 +75,7 @@ Craigslist 并未设置更为复杂的反爬虫机制：
     1.  有很多种手段，比如字体模糊，如下图所示，并不以文本方式渲染全文，而是随机使用（显示原文本的）图片替换掉文本，以中断我们对文本的抓取。
         1.  与验证码类似，也可以使用 OCR 技术破解已经被 selenium 渲染的网页来抓取所需的信息。
 
-![图片对文本的遮断](assets/images/2024-03-05-tutorial-craigslist-anti-anti-crawler-image01.png)
+![图片对文本的遮断](https://kitahara-saneyuki.github.io/assets/images/2024-03-05-tutorial-craigslist-anti-anti-crawler-image01.png)
 
 ## 开发的第一步：技术选型、开发流程、系统设计
 
