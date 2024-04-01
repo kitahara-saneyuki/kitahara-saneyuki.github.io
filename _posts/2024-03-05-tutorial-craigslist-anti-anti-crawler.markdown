@@ -212,11 +212,11 @@ Docker 容器化和 Kubernetes 集群管理的使用，大幅度简化了系统�
 （回顾本文，我发现我一行代码都没写。
 如果本文有下篇，我一定写。）
 
-[^0]: _hiQ Labs v. LinkedIn_ https://en.wikipedia.org/wiki/HiQ_Labs_v._LinkedIn
-[^1]: 美国第九巡回上诉法院裁定hiQ从LinkedIn公开爬取数据的行为不违反美国《计算机欺诈和滥用法》 https://www.tahota.com/CN/article.aspx?mdid=479f03fb7ef5e082&KeyID=fe5ba3b1c0ae5106
-[^2]: 五年官司终败诉，万亿爬虫大军蠢蠢欲动 https://cloud.tencent.com/developer/article/2020659
-[^3]: Gantt diagrams https://mermaid.js.org/syntax/gantt.html
-[^4]: https://sfbay.craigslist.org/search/apa#search=1~list~0~0
-[^5]: 云原生应用开发的最佳实践原则，12-Factor https://juejin.cn/post/6954220746822385700
-[^6]: 爬虫架构|Celery+RabbitMQ快速入门（四）整合版本 https://cloud.tencent.com/developer/article/1131863?areaSource=106001.12
-[^7]: 爬虫总结 | 爬虫的那点事 https://cloud.tencent.com/developer/article/1150865
+[^0]: [Wikipedia: _hiQ Labs v. LinkedIn_](https://en.wikipedia.org/wiki/HiQ_Labs_v._LinkedIn)
+[^1]: [美国第九巡回上诉法院裁定hiQ从LinkedIn公开爬取数据的行为不违反美国《计算机欺诈和滥用法》](https://www.tahota.com/CN/article.aspx?mdid=479f03fb7ef5e082&KeyID=fe5ba3b1c0ae5106)
+[^2]: [五年官司终败诉，万亿爬虫大军蠢蠢欲动](https://cloud.tencent.com/developer/article/2020659)
+[^3]: [Gantt diagrams](https://mermaid.js.org/syntax/gantt.html)
+[^4]: [Craigslist](https://sfbay.craigslist.org/search/apa#search=1~list~0~0)
+[^5]: [云原生应用开发的最佳实践原则，12-Factor](https://juejin.cn/post/6954220746822385700)
+[^6]: [爬虫架构|Celery+RabbitMQ快速入门（四）整合版本](https://cloud.tencent.com/developer/article/1131863?areaSource=106001.12)
+[^7]: [爬虫总结 | 爬虫的那点事](https://cloud.tencent.com/developer/article/1150865)
