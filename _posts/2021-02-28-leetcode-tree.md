@@ -1,61 +1,12 @@
 ---
 layout:     single
 title:      "LeetCode 题解：树"
-date:       2021-02-18 13:43:53 +0800
+date:       2021-02-28 23:53:59 +0800
 categories: LeetCode
 published:  false
 ---
 
-链表结构，天生具有递归性，我们尝试一下递归思维，解决最普遍的题目，反转链表。
-
-前序遍历之中，你可以想象，前面的链表都已经处理好了，只需要改变后面的链表就行。
-
-```py
-def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
-    def dfs(curr, prev):
-        # 最后返回尾节点
-        if not curr: return prev
-        next = curr.next
-        # 主逻辑：每次递归只改变一个箭头
-        curr.next = prev
-        return dfs(next, curr)
-    return dfs(head, None)
-```
-
-后序遍历则与之相反，你可以想象，后面的链表都已经处理好了，只需要改变前面的链表就行。
-
-```py
-def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
-    def dfs(curr):
-        # 边界条件
-        if not curr or not curr.next: return curr
-        # 后序遍历
-        ret = dfs(curr.next)
-        # 主逻辑
-        curr.next.next = curr
-        # 现在先置空并没有关系，因为 dfs 过程结束后会自动回推一格
-        curr.next = None
-        return ret
-    return dfs(head)
-```
-
-考点：
-1.  指针的修改
-1.  链表的拼接
-
-需要注意：
-1.  生成环
-1.  没搞清边界
-
-技巧：
-1.  虚拟头
-1.  快慢指针
-1.  拼接链表
-
-做题策略
-1.  先穿针引线
-1.  再排列组合
-1.  排除潜在的空指针异常
+树
 
 ## 归类题解
 
@@ -66,7 +17,7 @@ def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
 ### 快慢指针
 
 - [876] 链表中点
-    - 快慢指针母题，需要注意边界条件，因为快指针一次前进两格，边界条件就是 `快指针自己和快指针下一格都非空`
+    - 快慢指针母题，需要注意边界条件，因为快指针一次前进两格，边界条件就是 **快指针自己和快指针下一格都非空**
 - [141] 链表环1, [142] 链表环2
     - 我们希望求得的值是链表环的起点下标 $a$ ，我们假设快慢指针相遇时慢指针走了 $a + b$ 步，那么慢指针就走了 $2a + 2b$ 步，环长为 $n = a + b$ 步
     - 那么我们的慢指针已经走了 $a + b$ 步，想要求得 $a$ ，我们可以考虑 $a + n = a + a + b$ ，再找第三根指针，与慢指针同步，两者相遇时，第三根指针走过的步数，就是环的起点
