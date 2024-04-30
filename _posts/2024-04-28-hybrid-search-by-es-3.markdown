@@ -44,8 +44,8 @@ PUT chunker
 1.  使用正则表达式把 `body_content` 中的内容切分为一组句子，这里的正则表达式规避了不正确切分的做法（如在 Mr. 或 Mrs. 上切分）。
 1.  尝试把句子块连缀起来，使其尽可能接近我们设定的长度上限。
 
-每个预处理步骤之后，管线对每个句子执行 embedding 算法。
-请注意我们每段文章有若干段文本块（ `chunk` ），每个文本块都有其 embedding 之后的向量，即之前所定义的 `predicted_value`。
+预处理步骤之后，管线对每个句子执行 embedding 算法。
+请注意我们每段文章有若干段文本块（ `chunk` ，在我们的索引中是 `passage.text` ），每个文本块都有其 embedding 之后的向量，即之前所定义的 `passage.vector.predicted_value`。
 
 ```json
 PUT _ingest/pipeline/chunker
