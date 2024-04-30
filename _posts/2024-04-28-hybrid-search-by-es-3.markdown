@@ -564,6 +564,9 @@ GET chunker/_search
 工程实现效果是令人满意的。
 
 下文中我们将导入实际测试数据，即 Kaggle 上的 [Six TripAdvisor Datasets for NLP Tasks](https://www.kaggle.com/datasets/inigolopezrioboo/a-tripadvisor-dataset-for-nlp-tasks)[^2] 中的纽约餐厅评论，以验证 ElasticSearch 的 kNN 搜索算法针对大规模数据集的威力。
+测试用例暂定为：
+
+> 找寻纽约最好的意大利面饭馆
 
 ### 实验计划
 
