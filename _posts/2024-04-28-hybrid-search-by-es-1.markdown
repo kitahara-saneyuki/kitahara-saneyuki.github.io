@@ -33,6 +33,8 @@ published:  true
 
 ![系统架构](https://www.elastic.co/search-labs/_next/image?url=%2Fsearch-labs%2Fassets%2Fimages%2Fblog-elastic-cohere-rerank-rag.png&w=1200&q=90)
 
+### 实验计划
+
 1.  [ ] 小样本测试
     1.  [x] 语义搜索：验证 Cohere 提供的 embedding 算法和 ElasticSearch 的 ANN 搜索。
     1.  [ ] 重排序：验证 Cohere 提供的 re-ranking 算法
