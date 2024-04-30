@@ -136,7 +136,7 @@ PUT _ingest/pipeline/cohere_embeddings
 }
 ```
 
-请注意我们在这里并没有引入 chunking 机制—— embedding 算法往往包括 token 长度限制，对于过长的文章，我们将在下文中讲解如何引入 chunking 机制[^1]。
+请注意我们在这里并没有引入 chunking 机制—— embedding 算法往往包括 token 长度限制，对于过长的文章，我们将在下文中讲解如何引入 chunking 机制[^2]。
 ElasticSearch 承诺将在未来将 chunking 整合进工作流，实现 chunking 的自动化。
 
 既然我们已经有了源索引和目标索引，现在可以对我们的文档进行重新索引。
@@ -260,7 +260,9 @@ GET cohere-embeddings/_search
 
 我们在本节中使用 Cohere 提供的 embedding 功能和 ES 自带的 kNN 搜索，实现了语义搜索。
 在下一节中我们将构建 ES 本地测试环境以方便下一步的研究。
+
 在更之后的章节中，我们将使用 ES 的 ingest pipeline 引入大规模数据，测试语义搜索功能。
 最后我们将调整 ingest pipeline 以适应多语种（中文）文档，并测试 Cohere 提供的重排序功能。
 
-[^1]: Chunking Large Documents via Ingest pipelines plus nested vectors equals easy passage search https://www.elastic.co/search-labs/blog/chunking-via-ingest-pipelines
+[^1]: [A TripAdvisor Dataset for Dyadic Context Analysis](https://zenodo.org/records/6583422)
+[^2]: [Chunking Large Documents via Ingest pipelines plus nested vectors equals easy passage search](https://www.elastic.co/search-labs/blog/chunking-via-ingest-pipelines)
