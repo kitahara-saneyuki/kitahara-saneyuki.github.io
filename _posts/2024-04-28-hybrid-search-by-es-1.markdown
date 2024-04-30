@@ -21,7 +21,11 @@ published:  true
 为节约 PoC 时间，我们使用 Elastic Cloud 作为我们的原型验证。
 使用 docker compose 构建本地原型的步骤，我们将另文讲解。
 
-## 实验计划
+## 系统架构和实验计划
+
+大概的系统架构如下图所示。
+
+![系统架构](https://www.elastic.co/search-labs/_next/image?url=%2Fsearch-labs%2Fassets%2Fimages%2Fblog-elastic-cohere-rerank-rag.png&w=1200&q=90)
 
 1.  [ ] 小样本测试
     1.  [x] 语义搜索：验证 Cohere 提供的 embedding 算法和 ElasticSearch 的 ANN 搜索。
