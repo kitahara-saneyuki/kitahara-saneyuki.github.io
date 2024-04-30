@@ -273,5 +273,5 @@ GET cohere-embeddings/_search
 [^1]: [A TripAdvisor Dataset for Dyadic Context Analysis](https://zenodo.org/records/6583422)
 [^2]: [无中生有：论推荐算法中的Embedding思想](https://zhuanlan.zhihu.com/p/320196402)
 [^3]: [推荐系统 embedding 技术实践总结](https://www.jiqizhixin.com/articles/2020-06-30-11)
-[^3]: [一文读懂：大模型RAG（检索增强生成）](https://zhuanlan.zhihu.com/p/675509396)
-[^4]: [Chunking Large Documents via Ingest pipelines plus nested vectors equals easy passage search](https://www.elastic.co/search-labs/blog/chunking-via-ingest-pipelines)
+[^4]: [一文读懂：大模型RAG（检索增强生成）](https://zhuanlan.zhihu.com/p/675509396)
+[^5]: [Chunking Large Documents via Ingest pipelines plus nested vectors equals easy passage search](https://www.elastic.co/search-labs/blog/chunking-via-ingest-pipelines)
