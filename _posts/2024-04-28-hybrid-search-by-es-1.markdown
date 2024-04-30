@@ -23,9 +23,9 @@ published:  true
 
 ### 概念解释
 
-1.  embedding ：即语言的向量化[^2]，根据其语意生成一个向量，指代其语意。
+1.  embedding ：即语言的向量化[^2][^3]，根据其语意生成一个向量，指代其语意。
 1.  混合搜索 hybrid search ：即关键字搜索（ keyword search ）与语义搜索（ semantic search ）相融合。
-1.  检索增强生成 RAG (Retrieval Augmented Generation) [^3]：通过自有垂直领域数据库检索相关信息，然后合并成为 prompt 模板，给大模型生成漂亮的回答。本文最终的目的就是使用 ElasticSearch （下称 ES ）实现混合搜索，以构建 RAG ，服务于我们的领域数据搜索。
+1.  检索增强生成 RAG (Retrieval Augmented Generation) [^4]：通过自有垂直领域数据库检索相关信息，然后合并成为 prompt 模板，给大模型生成漂亮的回答。本文最终的目的就是使用 ElasticSearch （下称 ES ）实现混合搜索，以构建 RAG ，服务于我们的领域数据搜索。
 
 ## 系统架构和实验计划
 
@@ -142,7 +142,7 @@ PUT _ingest/pipeline/cohere_embeddings
 }
 ```
 
-请注意我们在这里并没有引入 chunking 机制—— embedding 算法往往包括 token 长度限制，对于过长的文章，我们将在下文中讲解如何引入 chunking 机制[^4]。
+请注意我们在这里并没有引入 chunking 机制—— embedding 算法往往包括 token 长度限制，对于过长的文章，我们将在下文中讲解如何引入 chunking 机制[^5]。
 ElasticSearch 承诺将在未来将 chunking 整合进工作流，实现 chunking 的自动化。
 
 既然我们已经有了源索引和目标索引，现在可以对我们的文档进行重新索引。
@@ -271,6 +271,7 @@ GET cohere-embeddings/_search
 最后我们将调整 ingest pipeline 以适应多语种（中文）文档，并测试 Cohere 提供的重排序功能。
 
 [^1]: [A TripAdvisor Dataset for Dyadic Context Analysis](https://zenodo.org/records/6583422)
-[^2]: [推荐系统 embedding 技术实践总结](https://www.jiqizhixin.com/articles/2020-06-30-11)
+[^2]: [无中生有：论推荐算法中的Embedding思想](https://zhuanlan.zhihu.com/p/320196402)
+[^3]: [推荐系统 embedding 技术实践总结](https://www.jiqizhixin.com/articles/2020-06-30-11)
 [^3]: [一文读懂：大模型RAG（检索增强生成）](https://zhuanlan.zhihu.com/p/675509396)
 [^4]: [Chunking Large Documents via Ingest pipelines plus nested vectors equals easy passage search](https://www.elastic.co/search-labs/blog/chunking-via-ingest-pipelines)
