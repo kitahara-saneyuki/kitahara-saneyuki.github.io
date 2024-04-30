@@ -44,19 +44,19 @@ ES 官网提供了一个[常见虚拟内存限制错误的解决方案](https://
 
 根据[前文](https://kitahara-saneyuki.github.io/nlp/hybrid-search-by-es-1/)所述的 Cohere 混合检索实现，确认我们安装的最新 ES 版本支持混合检索。
 
+## 下文预告
+
+我们在本节中构建了 ES 本地测试环境以方便下一步的研究。
+在下一节中我们将使用 ES 的 ingest pipeline 引入长文数据，测试针对长文的语义搜索功能。
+
 ### 实验计划
 
 1.  [ ] 小样本测试
     1.  [x] 语义搜索：验证 Cohere 提供的 embedding 算法和 ElasticSearch 的 ANN 搜索。
-    1.  [ ] 建立 ES 的导入数据 Ingest 管线， chunking 数据到合适规模。
+    1.  [ ] 建立 ES 的导入数据 Ingest 管线， chunking 长文到合适规模。
     1.  [ ] 重排序：验证 Cohere 提供的 re-ranking 算法
 1.  [ ] 大样本测试：
     1.  [x] 构建本地测试环境
     1.  [ ] 导入实际测试数据
 
 本节实现了 2.1 。
-
-## 下文预告
-
-我们在本节中构建了 ES 本地测试环境以方便下一步的研究。
-在下一节中我们将使用 ES 的 ingest pipeline 引入大规模数据，测试语义搜索功能。

@@ -37,7 +37,7 @@ published:  true
 
 1.  [ ] 小样本测试
     1.  [x] 语义搜索：验证 Cohere 提供的 embedding 算法和 ElasticSearch 的 ANN 搜索。
-    1.  [ ] 建立 ES 的导入数据 Ingest Pipeline， chunking 数据到合适规模。
+    1.  [ ] 建立 ES 的导入数据 Ingest Pipeline， chunking 长文到合适规模。
     1.  [ ] 重排序：验证 Cohere 提供的 re-ranking 算法
 1.  [ ] 大样本测试：
     1.  [ ] 构建本地测试环境

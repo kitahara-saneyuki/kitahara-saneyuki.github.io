@@ -1,9 +1,9 @@
 ---
 layout:     single
-title:      "实战：使用 ElasticSearch 8.13 实现混合搜索（3）：构建长文拆分管线（ chunking ）和重排序管线（ re-ranking ）"
+title:      "实战：使用 ElasticSearch 8.13 实现混合搜索（3）：构建长文拆分管线（ chunking ）"
 date:       2024-04-29 19:52:59 +0800
 categories: NLP
-published:  false
+published:  true
 ---
 
 ## 长文拆分
@@ -11,7 +11,7 @@ published:  false
 与支持无限长文分析的 BM25 技术不同， Cohere 提供的 embedding 算法是不能处理超过 1024 个 token 的文字的。对于长度超过 128 个 token 的文本， Cohere 的算法将会切分其 embedding 结果向量，取其平均值[^1]。
 
 根据 ElasticSearch 官网博客提供的[指南](https://www.elastic.co/search-labs/blog/chunking-via-ingest-pipelines)，我们对 Kibana 控制台输入以下命令。
-请注意这里的向量维度被更改为了 1024 维，以适应 Cohere 的 embedding 算法。
+请注意这里的向量维度被更改为了 1024 维，相似性算法也不再是指南中提供的向量点乘，而是余弦，以适应 Cohere 的 embedding 算法。
 
 ```json
 PUT chunker
@@ -28,7 +28,7 @@ PUT chunker
                 "type": "dense_vector",
                 "index": true,
                 "dims": 1024,
-                "similarity": "dot_product"
+                "similarity": "cosine"
               }
             }
           }
@@ -45,6 +45,7 @@ PUT chunker
 1.  尝试把句子块连缀起来，使其尽可能接近我们设定的长度上限。
 
 每个预处理步骤之后，管线对每个句子执行 embedding 算法。
+请注意我们每段文章有若干段文本块（ `chunk` ），每个文本块都有其 embedding 之后的向量，即之前所定义的 `predicted_value`。
 
 ```json
 PUT _ingest/pipeline/chunker
@@ -86,7 +87,7 @@ PUT _ingest/pipeline/chunker
             "input_output": [
               { 
                 "input_field": "_ingest._value.text",
-                "output_field": "_ingest._value.vector"
+                "output_field": "_ingest._value.vector.predicted_value"
               }
             ],
             "on_failure": [
@@ -139,7 +140,20 @@ PUT chunker/_doc/5?pipeline=chunker
 }
 ```
 
-执行搜索
+如果对 embedding 之后的结果不太放心，我们可以手动观察一下：
+
+```json
+GET chunker/_search?size=5
+{
+    "query": {
+        "match_all": {}
+    }
+}
+```
+
+### 搜索测试
+
+我们先用官方文档中测试一下，当然 kNN 的搜索 k 不一定一定是 1 ，我们改成 2 。
 
 ```json
 GET chunker/_search
@@ -156,7 +170,7 @@ GET chunker/_search
       ]
     },
     "field": "passages.vector.predicted_value",
-    "k": 1,
+    "k": 2,
     "num_candidates": 100,
     "query_vector_builder": {
       "text_embedding": {
@@ -168,5 +182,399 @@ GET chunker/_search
 }
 ```
 
+搜索结果：
+
+```json
+{
+  "took": 285,
+  "timed_out": false,
+  "_shards": {
+    "total": 1,
+    "successful": 1,
+    "skipped": 0,
+    "failed": 0
+  },
+  "hits": {
+    "total": {
+      "value": 2,
+      "relation": "eq"
+    },
+    "max_score": 0.78212404,
+    "hits": [
+      {
+        "_index": "chunker",
+        "_id": "1",
+        "_score": 0.78212404,
+        "_ignored": [
+          "body_content.keyword",
+          "passages.text.keyword"
+        ],
+        "fields": {
+          "title": [
+            "Adding passage vector search to Lucene"
+          ]
+        },
+        "inner_hits": {
+          "passages": {
+            "hits": {
+              "total": {
+                "value": 6,
+                "relation": "eq"
+              },
+              "max_score": 0.78212404,
+              "hits": [
+                {
+                  "_index": "chunker",
+                  "_id": "1",
+                  "_nested": {
+                    "field": "passages",
+                    "offset": 3
+                  },
+                  "_score": 0.78212404,
+                  "fields": {
+                    "passages": [
+                      {
+                        "text": [
+                          "This sounds perfect for multiple passages and vectors belonging to a single top-level document! This is all awesome! But, wait, Elasticsearch® doesn’t support vectors in nested fields. Why not, and what needs to change? The key issue is how Lucene can join back to the parent documents when searching child vector passages."
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "_index": "chunker",
+                  "_id": "1",
+                  "_nested": {
+                    "field": "passages",
+                    "offset": 0
+                  },
+                  "_score": 0.7376485,
+                  "fields": {
+                    "passages": [
+                      {
+                        "text": [
+                          "Vector search is a powerful tool in the information retrieval tool box. Using vectors alongside lexical search like BM25 is quickly becoming commonplace. But there are still a few pain points within vector search that need to be addressed. A major one is text embedding models and handling larger text input."
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "_index": "chunker",
+                  "_id": "1",
+                  "_nested": {
+                    "field": "passages",
+                    "offset": 4
+                  },
+                  "_score": 0.7086177,
+                  "fields": {
+                    "passages": [
+                      {
+                        "text": [
+                          "Like with kNN pre-filtering versus post-filtering, when the joining occurs determines the result quality and quantity. If a user searches for the top four nearest parent documents (not passages) to a query vector, they usually expect four documents. But what if they are searching over child vector passages and all four of the nearest vectors are from the same parent document?"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "_index": "chunker",
+        "_id": "2",
+        "_score": 0.704564,
+        "_ignored": [
+          "body_content.keyword",
+          "passages.text.keyword"
+        ],
+        "fields": {
+          "title": [
+            "Use a Japanese language NLP model in Elasticsearch to enable semantic searches"
+          ]
+        },
+        "inner_hits": {
+          "passages": {
+            "hits": {
+              "total": {
+                "value": 6,
+                "relation": "eq"
+              },
+              "max_score": 0.704564,
+              "hits": [
+                {
+                  "_index": "chunker",
+                  "_id": "2",
+                  "_nested": {
+                    "field": "passages",
+                    "offset": 3
+                  },
+                  "_score": 0.704564,
+                  "fields": {
+                    "passages": [
+                      {
+                        "text": [
+                          "Elasticsearch enables synonyms and similar terms to be defined to handle such situations, but in some cases it can be difficult to simply use a correspondence table to convert a search query into a more suitable one. To address this need, Elasticsearch 8.0 released the vector search feature, which searches by the semantic content of a phrase."
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "_index": "chunker",
+                  "_id": "2",
+                  "_nested": {
+                    "field": "passages",
+                    "offset": 4
+                  },
+                  "_score": 0.6868271,
+                  "fields": {
+                    "passages": [
+                      {
+                        "text": [
+                          "Alongside that, we also have a blog series on how to use Elasticsearch to perform vector searches and other NLP tasks. However, up through the 8.8 release, it was not able to correctly analyze text in languages other than English. With the 8.9 release, Elastic added functionality for properly analyzing Japanese in text analysis processing."
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "_index": "chunker",
+                  "_id": "2",
+                  "_nested": {
+                    "field": "passages",
+                    "offset": 0
+                  },
+                  "_score": 0.6548239,
+                  "fields": {
+                    "passages": [
+                      {
+                        "text": [
+                          "Quickly finding necessary documents from among the large volume of internal documents and product information generated every day is an extremely important task in both work and daily life. However, if there is a high volume of documents to search through, it can be a time-consuming process even for computers to re-read all of the documents in real time and find the target file."
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+可见文档 1 的相关性有 0.78 ，的确远比相关性只有 0.7 的文档 2 更贴近我们的问题。
+
+我们换一个搜索关键字， `scalar quantization` ，搜索结果如下：
+
+```json
+{
+  "took": 424,
+  "timed_out": false,
+  "_shards": {
+    "total": 1,
+    "successful": 1,
+    "skipped": 0,
+    "failed": 0
+  },
+  "hits": {
+    "total": {
+      "value": 2,
+      "relation": "eq"
+    },
+    "max_score": 0.8421624,
+    "hits": [
+      {
+        "_index": "chunker",
+        "_id": "3",
+        "_score": 0.8421624,
+        "_ignored": [
+          "body_content.keyword",
+          "passages.text.keyword"
+        ],
+        "fields": {
+          "title": [
+            "Automatic Byte Quantization in Lucene"
+          ]
+        },
+        "inner_hits": {
+          "passages": {
+            "hits": {
+              "total": {
+                "value": 6,
+                "relation": "eq"
+              },
+              "max_score": 0.8421624,
+              "hits": [
+                {
+                  "_index": "chunker",
+                  "_id": "3",
+                  "_nested": {
+                    "field": "passages",
+                    "offset": 2
+                  },
+                  "_score": 0.8421624,
+                  "fields": {
+                    "passages": [
+                      {
+                        "text": [
+                          "Meaning some information is lost for the sake of space. For an in depth explanation of scalar quantization, see: Scalar Quantization 101. At a high level, scalar quantization is a lossy compression technique. Some simple math gives significant space savings with very little impact on recall."
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "_index": "chunker",
+                  "_id": "3",
+                  "_nested": {
+                    "field": "passages",
+                    "offset": 1
+                  },
+                  "_score": 0.7212088,
+                  "fields": {
+                    "passages": [
+                      {
+                        "text": [
+                          "One way to use around 75% less memory is through byte quantization. Lucene and consequently Elasticsearch has supported indexing byte vectors for some time, but building these vectors has been the user's responsibility. This is about to change, as we have introduced int8 scalar quantization in Lucene. All quantization techniques are considered lossy transformations of the raw data."
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "_index": "chunker",
+                  "_id": "3",
+                  "_nested": {
+                    "field": "passages",
+                    "offset": 0
+                  },
+                  "_score": 0.62174904,
+                  "fields": {
+                    "passages": [
+                      {
+                        "text": [
+                          "While HNSW is a powerful and flexible way to store and search vectors, it does require a significant amount of memory to run quickly. For example, querying 1MM float32 vectors of 768 dimensions requires roughly 1,000,000∗4∗(768+12)=3120000000≈31,000,000∗4∗(768+12)=3120000000bytes≈3GB of ram. Once you start searching a significant number of vectors, this gets expensive."
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "_index": "chunker",
+        "_id": "1",
+        "_score": 0.60923594,
+        "_ignored": [
+          "body_content.keyword",
+          "passages.text.keyword"
+        ],
+        "fields": {
+          "title": [
+            "Adding passage vector search to Lucene"
+          ]
+        },
+        "inner_hits": {
+          "passages": {
+            "hits": {
+              "total": {
+                "value": 6,
+                "relation": "eq"
+              },
+              "max_score": 0.60923594,
+              "hits": [
+                {
+                  "_index": "chunker",
+                  "_id": "1",
+                  "_nested": {
+                    "field": "passages",
+                    "offset": 3
+                  },
+                  "_score": 0.60923594,
+                  "fields": {
+                    "passages": [
+                      {
+                        "text": [
+                          "This sounds perfect for multiple passages and vectors belonging to a single top-level document! This is all awesome! But, wait, Elasticsearch® doesn’t support vectors in nested fields. Why not, and what needs to change? The key issue is how Lucene can join back to the parent documents when searching child vector passages."
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "_index": "chunker",
+                  "_id": "1",
+                  "_nested": {
+                    "field": "passages",
+                    "offset": 0
+                  },
+                  "_score": 0.59735155,
+                  "fields": {
+                    "passages": [
+                      {
+                        "text": [
+                          "Vector search is a powerful tool in the information retrieval tool box. Using vectors alongside lexical search like BM25 is quickly becoming commonplace. But there are still a few pain points within vector search that need to be addressed. A major one is text embedding models and handling larger text input."
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "_index": "chunker",
+                  "_id": "1",
+                  "_nested": {
+                    "field": "passages",
+                    "offset": 2
+                  },
+                  "_score": 0.59269404,
+                  "fields": {
+                    "passages": [
+                      {
+                        "text": [
+                          "And if you want to preserve your metadata, it must be added to every new document. A way to address this is with Lucene's “join” functionality. This is an integral part of Elasticsearch’s nested field type. It makes it possible to have a top-level document with multiple nested documents, allowing you to search over nested documents and join back against their parent documents."
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+这次则是 0.84 对比 0.6 ，相关性差别十分显著。
+
+## 下文预告
+
+我们在本节中使用了 ES 的 ingest pipeline 引入长文数据，测试了针对长文的语义搜索功能。
+工程实现效果是令人满意的。
+
+下文中我们将导入实际测试数据，即 Kaggle 上的 [Six TripAdvisor Datasets for NLP Tasks](https://www.kaggle.com/datasets/inigolopezrioboo/a-tripadvisor-dataset-for-nlp-tasks)[^1] 中的纽约餐厅评论，以验证 ElasticSearch 的 kNN 搜索算法针对大规模数据集的威力。
+
+### 实验计划
+
+1.  [ ] 小样本测试
+    1.  [x] 语义搜索：验证 Cohere 提供的 embedding 算法和 ElasticSearch 的 ANN 搜索。
+    1.  [x] 建立 ES 的导入数据 Ingest 管线， chunking 长文到合适规模。
+    1.  [ ] 重排序：验证 Cohere 提供的 re-ranking 算法
+1.  [ ] 大样本测试：
+    1.  [x] 构建本地测试环境
+    1.  [ ] 导入实际测试数据
+
+本节实现了 1.2。
 
 [^1]: [Cohere launches larger Embed models](https://cohere.com/blog/cohere-launches-larger-embed-models-2)
