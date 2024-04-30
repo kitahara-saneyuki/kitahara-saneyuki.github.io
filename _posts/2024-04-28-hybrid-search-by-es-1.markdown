@@ -8,10 +8,10 @@ published:  true
 
 ## 实验目标：选定测试数据集，给定可验证的指标
 
-目的：以最快速度实现混合搜索的原型（ Proof-of-concept, PoC, 或曰 rapid prototyping ）。
+目的：以最快速度实现混合搜索的原型（ Proof-of-concept, PoC, 或 rapid prototyping ）。
 我们可以在原型构建好之后对各个组件进行微调和进一步测试，以获得更好的效果。
 
-我们使用 Kaggle 上的 [Six TripAdvisor Datasets for NLP Tasks](https://www.kaggle.com/datasets/inigolopezrioboo/a-tripadvisor-dataset-for-nlp-tasks)[^1] 中的纽约餐厅评论作为数据集，以验证我们是否较好地实现了语义搜索（ embedding ）和重排序（ re-ranking ）。
+我们使用 Kaggle 上的 [Six TripAdvisor Datasets for NLP Tasks](https://www.kaggle.com/datasets/inigolopezrioboo/a-tripadvisor-dataset-for-nlp-tasks)[^1] 中的纽约餐厅评论作为数据集，以验证我们是否较好地实现了语义搜索（ semantic search ）和重排序（ re-ranking ）。
 
 可验证的指标：
 1.  [ ] 关键词搜索
@@ -20,6 +20,12 @@ published:  true
 
 为节约 PoC 时间，我们使用 Elastic Cloud 作为我们的原型验证。
 使用 docker compose 构建本地原型的步骤，我们将另文讲解。
+
+### 概念解释
+
+1.  embedding ：即语言的向量化[^2]，根据其语意生成一个向量，指代其语意。
+1.  混合搜索 hybrid search ：即关键字搜索（ keyword search ）与语义搜索（ semantic search ）相融合。
+1.  检索增强生成 RAG (Retrieval Augmented Generation) [^3]：通过自有垂直领域数据库检索相关信息，然后合并成为 prompt 模板，给大模型生成漂亮的回答。本文最终的目的就是使用 ElasticSearch （下称 ES ）实现混合搜索，以构建 RAG ，服务于我们的领域数据搜索。
 
 ## 系统架构和实验计划
 
@@ -40,7 +46,7 @@ published:  true
 
 我们根据 Elastic search labs 官网提供的[指南](https://www.elastic.co/search-labs/blog/elasticsearch-cohere-embeddings-support)，在 Elastic Cloud 的控制台进行测试。
 
-在较新的 ElasticSearch （下称 ES ）版本中（8.11以上），已经内置了对 embedding 向量化和内积的支持。而且可以与第三方模型提供方（如 Hugging Face 和 OpenAI ）进行整合。
+在较新的 ES 版本中（8.11以上），已经内置了对 embedding 向量化和内积的支持。而且可以与第三方模型提供方（如 Hugging Face 和 OpenAI ）进行整合。
 
 我们[注册](https://dashboard.cohere.ai/welcome/register)一个 Cohere 账户。
 使用其 API Key 在 Elastic Cloud 的控制台中输入命令，建立模型。
@@ -136,7 +142,7 @@ PUT _ingest/pipeline/cohere_embeddings
 }
 ```
 
-请注意我们在这里并没有引入 chunking 机制—— embedding 算法往往包括 token 长度限制，对于过长的文章，我们将在下文中讲解如何引入 chunking 机制[^2]。
+请注意我们在这里并没有引入 chunking 机制—— embedding 算法往往包括 token 长度限制，对于过长的文章，我们将在下文中讲解如何引入 chunking 机制[^4]。
 ElasticSearch 承诺将在未来将 chunking 整合进工作流，实现 chunking 的自动化。
 
 既然我们已经有了源索引和目标索引，现在可以对我们的文档进行重新索引。
@@ -265,4 +271,6 @@ GET cohere-embeddings/_search
 最后我们将调整 ingest pipeline 以适应多语种（中文）文档，并测试 Cohere 提供的重排序功能。
 
 [^1]: [A TripAdvisor Dataset for Dyadic Context Analysis](https://zenodo.org/records/6583422)
-[^2]: [Chunking Large Documents via Ingest pipelines plus nested vectors equals easy passage search](https://www.elastic.co/search-labs/blog/chunking-via-ingest-pipelines)
+[^2]: [推荐系统 embedding 技术实践总结](https://www.jiqizhixin.com/articles/2020-06-30-11)
+[^3]: [一文读懂：大模型RAG（检索增强生成）](https://zhuanlan.zhihu.com/p/675509396)
+[^4]: [Chunking Large Documents via Ingest pipelines plus nested vectors equals easy passage search](https://www.elastic.co/search-labs/blog/chunking-via-ingest-pipelines)
