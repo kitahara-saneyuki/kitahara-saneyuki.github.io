@@ -563,7 +563,7 @@ GET chunker/_search
 我们在本节中使用了 ES 的 ingest pipeline 引入长文数据，测试了针对长文的语义搜索功能。
 工程实现效果是令人满意的。
 
-下文中我们将导入实际测试数据，即 Kaggle 上的 [Six TripAdvisor Datasets for NLP Tasks](https://www.kaggle.com/datasets/inigolopezrioboo/a-tripadvisor-dataset-for-nlp-tasks)[^1] 中的纽约餐厅评论，以验证 ElasticSearch 的 kNN 搜索算法针对大规模数据集的威力。
+下文中我们将导入实际测试数据，即 Kaggle 上的 [Six TripAdvisor Datasets for NLP Tasks](https://www.kaggle.com/datasets/inigolopezrioboo/a-tripadvisor-dataset-for-nlp-tasks)[^2] 中的纽约餐厅评论，以验证 ElasticSearch 的 kNN 搜索算法针对大规模数据集的威力。
 
 ### 实验计划
 
@@ -578,3 +578,4 @@ GET chunker/_search
 本节实现了 1.2。
 
 [^1]: [Cohere launches larger Embed models](https://cohere.com/blog/cohere-launches-larger-embed-models-2)
+[^2]: [A TripAdvisor Dataset for Dyadic Context Analysis](https://zenodo.org/records/6583422)
