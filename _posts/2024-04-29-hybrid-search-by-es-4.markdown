@@ -1,9 +1,9 @@
 ---
 layout:     single
-title:      "实战：使用 ElasticSearch 8.13 实现混合搜索（2）：构建本地测试环境"
+title:      "实战：使用 ElasticSearch 8.13 实现混合搜索（4）：真实世界数据导入"
 date:       2024-04-29 19:52:59 +0800
 categories: NLP
-published:  true
+published:  false
 ---
 
 ## 构建开发环境： ELK-B 

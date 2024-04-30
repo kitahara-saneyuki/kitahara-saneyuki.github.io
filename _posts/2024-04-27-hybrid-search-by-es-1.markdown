@@ -1,7 +1,7 @@
 ---
 layout:     single
 title:      "实战：使用 ElasticSearch 8.13 实现混合搜索（1）：构建 Cohere embedding 工作流"
-date:       2024-04-28 23:57:19 +0800
+date:       2024-04-27 19:52:59 +0800
 categories: NLP
 published:  true
 ---
@@ -37,10 +37,11 @@ published:  true
 
 1.  [ ] 小样本测试
     1.  [x] 语义搜索：验证 Cohere 提供的 embedding 算法和 ElasticSearch 的 ANN 搜索。
+    1.  [ ] 建立 ES 的导入数据 Ingest Pipeline， chunking 数据到合适规模。
     1.  [ ] 重排序：验证 Cohere 提供的 re-ranking 算法
 1.  [ ] 大样本测试：
     1.  [ ] 构建本地测试环境
-    1.  [ ] 使用 ES 给定的 Ingest Pipeline，导入数据并 chunking 数据到合适规模。
+    1.  [ ] 导入实际测试数据
 
 本节将实现 1.1 。
 
