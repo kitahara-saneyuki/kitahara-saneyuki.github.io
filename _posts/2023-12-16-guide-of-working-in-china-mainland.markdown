@@ -140,6 +140,35 @@ sudo systemctl restart docker
 
 双击任务栏中的 docker 图标，点击配置按钮（齿轮状），选择 docker engine ，将上述代码中的 `registry-mirrors` 项粘贴到配置 JSON 中
 
+### conda
+
+根据清华大学开源软件镜像站提供的帮助[^6]。在 `~` 目录下创建 `.condarc` 文件，修改其内容为
+
+```
+channels:
+  - defaults
+show_channel_urls: true
+default_channels:
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2
+custom_channels:
+  conda-forge: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  msys2: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  bioconda: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  menpo: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  pytorch: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  pytorch-lts: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  simpleitk: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  deepmodeling: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/
+```
+
+即可添加 Anaconda Python 免费仓库。
+
+运行 `conda clean -i` 清除索引缓存，保证用的是镜像站提供的索引。
+
+运行 `conda create -n myenv numpy` 测试一下吧。
+
 ## 在 shell 终端使用科学上网工具
 
 ### Linux 环境下
@@ -176,3 +205,4 @@ export http_proxy="http://${hostip}:7890"
 [^3]: [VSCodium: How to use a different extension gallery](https://github.com/VSCodium/vscodium/blob/master/docs/index.md#how-to-use-a-different-extension-gallery)
 [^4]: [国内npm源镜像（npm加速下载） 指定npm镜像](https://blog.csdn.net/qq_43940789/article/details/131449710)
 [^5]: [rustup、cargo设置为国内镜像](https://www.jianshu.com/p/17ca4c56fc5e)
+[^6]: [清华大学开源软件镜像站：Anaconda 镜像使用帮助](https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/)

@@ -1,59 +1,56 @@
 ---
 layout:     single
-title:      "实战：使用 ElasticSearch 8.13 实现混合搜索（4）：真实世界数据导入"
-date:       2024-04-29 19:52:59 +0800
+title:      "实战：使用 ElasticSearch 8.13 实现混合搜索（4）：使用开源模型，导入真实世界数据"
+date:       2024-04-29 21:19:51 +0800
 categories: NLP
-published:  false
+published:  true
 ---
 
-## 构建开发环境： ELK-B 
+从本文开始我们终于要开始使用 Python 了，数据量实在超越了 Kibana 控制台能处理的规模。
+文末会附带 Jupyter Notebook 示例代码，以保证实验的可复现性。
 
-开发环境： AWS EC2 spot instance r7gd.large, ap-southeast-1, [Debian 12 (bookworm)](https://wiki.debian.org/Cloud/AmazonEC2Image/Bookworm)
+## 使用开源模型
 
-（笔者现在的网络环境不是特别好，用流量下载 docker 镜像实在不太现实）
+Cohere 不是免费的，如果把我们的 50 万条数据都丢给 Cohere embedding 算法处理的话，恐怕要产生一笔我们并不想要的信用卡债。
+这一步骤事实上已经在 ElasticSearch 官网博客提供的[指南](https://www.elastic.co/search-labs/blog/chunking-via-ingest-pipelines) 及其[示例代码 Jupyter Notebook](https://github.com/elastic/elasticsearch-labs/blob/main/notebooks/document-chunking/with-index-pipelines.ipynb) 中提及。
+测试中发现的易出 bug 点在于 `eland[pytorch]` 库需要 Python 3.10 才能较为顺利的安装。
 
-（ `r7gd.large` 有 16 GiB 内存，足够我们搞一搞原型开发。
-它提供的 118 GiB NVMe SSD 会在断电后立刻擦除全部数据，可以暂缓对其利用）
+这里还有一个问题，我们部署本地开源模型的话，需要使用 GPU 加速的云服务，这笔信用卡债似乎很难躲开。
+但如果我们的数据规模扩张到难以控制的程度，这笔实践经验就会显得十分宝贵。
+我们使用 AWS 最便宜的 [g4dn.xlarge](https://aws.amazon.com/ec2/instance-types/g4/) 实例运行我们的 PyTorch 服务。
+虽然他提供的 [nVidia T4 GPU](https://www.techpowerup.com/gpu-specs/tesla-t4.c3316) 已经是五年前发布的，但是 T4 GPU 似乎为半精度浮点计算（ FP16 ）做了特殊的优化，其半精度浮点计算能力高达 65.13 TFLOPS ，十分符合我们的需求。
 
-我们使用 docker-compose 构建开发环境，根据 [Elastic 官网提供的教程](https://www.elastic.co/blog/getting-started-with-the-elastic-stack-and-docker-compose) ，初始化代码仓库。
-为简化操作，我们直接 fork [ES 官方提供的代码仓库](https://github.com/elkninja/elastic-stack-docker-part-one/tree/main) 。
-根据文中提示，我们需要改变 `.env` 文件中定义的默认 __密码__ （ `changeme` ）、 __端口__ ，请勿使用 `latest` 作为 __STACK_VERSION__ ，我们建议使用硬编码的版本号。
-由于我们需要使用大量 ElasticSearch （下称 ES ）的最新功能，在本文中我们使用 `8.13.0` 版本。
+当然，云服务价格比 `r7gd.large` 贵了四倍。
+而且需要从 AWS 申请限额，可能要等一天才能完成。
+我们先在本机上玩，玩透了大概 AWS 也批准了我们的限额请求了。
 
-键入 `docker compose up` 以开始我们的 ES 之旅。
+笔者笔电的 RTX 2070 Max-Q 在大概 4 秒钟之内完成了 Cohere embedding 需要一分钟， CPU 十分钟不一定跑的完的数据，赢麻了。
 
-### ES docker 镜像 debug
+另外还有一个容易卡住的点，可以参考[这一节](https://kitahara-saneyuki.github.io/terraform/guide-of-working-in-china-mainland/#conda)。
 
-好事多磨。
-一般来说第一次启动 ES 总是不会太成功。
-debug 步骤如下：
+## 使用 Celery / RabbitMQ 管理大规模数据操作
 
-1.  使用 `docker container ls -a` 命令寻找正在执行的 ES 镜像。
-1.  使用 `docker logs <container_id> &> es01.log` 命令得到镜像日志，搜索 `error`
-1.  谷歌搜索错误及其解决方案。
 
-ES 官网提供了一个[常见虚拟内存限制错误的解决方案](https://www.elastic.co/blog/getting-started-with-the-elastic-stack-and-docker-compose)。
-笔者遇到的错误是， 1GiB 内存不够 ES 使用，将 `.env` 文件中的 `ES_MEM_LIMIT` 调整为 4GiB 即可正确启动 ES 。
 
-为了在本机访问部署在 AWS 上的 ES 集群，我们需要在 AWS EC2 控制台中暴露 9200 端口。
-这实在老生常谈了，不再赘述。
-
-## 确认安装成功
-
-进入 VSCode 替我们自动转发的 5601 端口，即 Kibana 控制台，输入默认用户 `elastic` 和密码以确认我们安装成功。
-
-根据[前文](https://kitahara-saneyuki.github.io/nlp/hybrid-search-by-es-1/)所述的 Cohere 混合检索实现，确认我们安装的最新 ES 版本支持混合检索。
 
 ### 实验计划
 
 1.  [ ] 小样本测试
     1.  [x] 语义搜索：验证 Cohere 提供的 embedding 算法和 ElasticSearch 的 ANN 搜索。
+    1.  [x] 建立 ES 的导入数据 Ingest Pipeline， chunking 长文到合适规模。
     1.  [ ] 重排序：验证 Cohere 提供的 re-ranking 算法
-1.  [ ] 大样本测试：
+1.  [x] 大样本测试：
     1.  [x] 构建本地测试环境
-    1.  [ ] 使用 ES 给定的 Ingest Pipeline，导入数据并 chunking 数据到合适规模。
+    1.  [x] 导入实际测试数据
+
+本节完成了 2.2 。
 
 ## 下文预告
 
-我们在本节中构建了 ES 本地测试环境以方便下一步的研究。
-在下一节中我们将使用 ES 的 ingest pipeline 引入大规模数据，测试语义搜索功能。
+我们在本节中使用 ES 的 ingest pipeline 引入大规模数据，测试语义搜索功能。
+
+下一节将测试 Cohere 提供的 re-ranking 算法，在前 100 条
+
+> 纽约最好的意大利面饭馆
+
+中，重新排序出第一二三四名来。
