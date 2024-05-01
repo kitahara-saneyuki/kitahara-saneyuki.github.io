@@ -28,10 +28,55 @@ Cohere 不是免费的，如果把我们的 50 万条数据都丢给 Cohere embe
 
 另外还有一个容易卡住的点，可以参考[这一节](https://kitahara-saneyuki.github.io/terraform/guide-of-working-in-china-mainland/#conda)。
 
+更新： AWS 拒绝了我们提高服务限额的申请。
+但工程领域总有绕过的手段，既然我们并不追求数据的实时更新，我们可以先在我们的笔电上完成数据的索引，再通过 [elasticsearch-dump](https://github.com/elasticsearch-dump/elasticsearch-dump) 上传到云服务上，这不就赢麻了嘛。
+
 ## 使用 Celery / RabbitMQ 管理大规模数据操作
 
+笔者简单尝试了一下使用 Python 和 ElasticSearch 自带的 `bulk` 工具导入 50 万条评论数据，效果不佳，事实上仅仅导入了 10 万条。
+
+输入 `Best pasta in New York` 执行搜索，搜索结果的确令人满意
+
+```
+ID: 32390
+Doc Title: review_720045084
+Passage Text:
+The best pasta in New York! Great dessert and friendly staff. A bit noisy on a Sunday evening but a really nice evening close to Times square.
+
+Score: 0.9367155
+---
+ID: 52686
+Doc Title: review_651849097
+Passage Text:
+The best pasta in New York. The only problem is the size of the plates. They must do smaller plates. For one person for example.
+
+Score: 0.90883017
+---
+ID: 73133
+Doc Title: review_628690226
+Passage Text:
+Perhaps the best pasta in NY. They can deliver pasta al dente, as they have done that for us in the past.
+...
+
+Score: 0.89915013
+```
+
+笔者决定使用大规模分布式数据处理的保留手段， RabbitMQ + Celery + 多个 Celery worker 。
+只需要简单编辑一下 `docker-compose.yml` ，新建 Celery worker 的代码和 `Dockerfile` ，即可享受大规模分布式数据处理的乐趣。
+
+### 实验结果
 
 
+
+## 下文预告
+
+我们在本节中使用 ES 的 ingest pipeline 引入大规模数据，测试语义搜索功能。
+
+下一节将测试 Cohere 提供的 re-ranking 算法，在前 100 条
+
+> 纽约最好的意大利面饭馆
+
+中，重新排序出第一二三四名来。
 
 ### 实验计划
 
@@ -44,13 +89,3 @@ Cohere 不是免费的，如果把我们的 50 万条数据都丢给 Cohere embe
     1.  [x] 导入实际测试数据
 
 本节完成了 2.2 。
-
-## 下文预告
-
-我们在本节中使用 ES 的 ingest pipeline 引入大规模数据，测试语义搜索功能。
-
-下一节将测试 Cohere 提供的 re-ranking 算法，在前 100 条
-
-> 纽约最好的意大利面饭馆
-
-中，重新排序出第一二三四名来。
