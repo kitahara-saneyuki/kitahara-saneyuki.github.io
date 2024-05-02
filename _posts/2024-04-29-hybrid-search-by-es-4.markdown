@@ -40,6 +40,8 @@ Cohere 不是免费的，如果把我们的 50 万条数据都丢给 Cohere embe
 ```
 ID: 32390
 Doc Title: review_720045084
+Restaurant Name: Tony_s_Di_Napoli_Midtown
+Title Review: Fantastic food!
 Passage Text:
 The best pasta in New York! Great dessert and friendly staff. A bit noisy on a Sunday evening but a really nice evening close to Times square.
 
@@ -47,6 +49,8 @@ Score: 0.9367155
 ---
 ID: 52686
 Doc Title: review_651849097
+Restaurant Name: Carmine_s_Italian_Restaurant_Times_Square
+Title Review: Wonderful
 Passage Text:
 The best pasta in New York. The only problem is the size of the plates. They must do smaller plates. For one person for example.
 
@@ -54,9 +58,10 @@ Score: 0.90883017
 ---
 ID: 73133
 Doc Title: review_628690226
+Restaurant Name: Il_Gattopardo
+Title Review: Excellence
 Passage Text:
 Perhaps the best pasta in NY. They can deliver pasta al dente, as they have done that for us in the past.
-...
 
 Score: 0.89915013
 ```
