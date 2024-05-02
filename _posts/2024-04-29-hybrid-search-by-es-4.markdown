@@ -64,6 +64,69 @@ Passage Text:
 Perhaps the best pasta in NY. They can deliver pasta al dente, as they have done that for us in the past.
 
 Score: 0.89915013
+---
+ID: 1460
+Doc Title: review_609031069
+Restaurant Name: San_Carlo_Osteria_Piemonte
+Title Review: Good if you are not italian
+Passage Text:
+Nice food in New York if you are not Italian but if you know how Italian food really is you can cook better at your home.Pasta not good
+
+Score: 0.88570404
+---
+ID: 149
+Doc Title: review_695311754
+Restaurant Name: San_Carlo_Osteria_Piemonte
+Title Review: Outstanding food,  great service and atmosphere 
+Passage Text:
+I'm a huge fan of picolla cucina on Spring St and I still think they have the best pastas in New York. It's my favorite in NYC, but a block away is San Carlo which may bemy second favorite. It is slightly different in terms of the menu, with less focus on pasta. It also has a slightly larger footprint with a small intimate bar, and has a very good wine and cocktail list.
+
+Score: 0.8833201
+---
+ID: 70098
+Doc Title: review_417272677
+Restaurant Name: Forlini_s_Restaurant
+Title Review: Buenísimo!!!
+Passage Text:
+Best pasta and minestrone soup ever, we been looking around in little Italy New york for a good Italian restaurant, I consult trip advisor. Found the place and was a delightful surprise. Jack where our hostess very kind and funny man. Definitely we are going to come back soon during our trip here in NY.
+
+Score: 0.8831816
+---
+ID: 87324
+Doc Title: review_241290115
+Restaurant Name: Carmine_s_Italian_Restaurant_Times_Square
+Title Review: Real Italian food
+Passage Text:
+Best classic Italian food in NYC.
+
+Score: 0.8803612
+---
+ID: 21092
+Doc Title: review_629514788
+Restaurant Name: IL_Melograno
+Title Review: Tastefull meal - worth a visit!!
+Passage Text:
+Best meal we’ve had in NYC! The pasta was just delicious / super fresh & the staff very friendly and kind. We would recommend it for sure!
+
+Score: 0.8786392
+---
+ID: 22079
+Doc Title: review_375834633
+Restaurant Name: Orso
+Title Review: Always a crowd pleaser!
+Passage Text:
+Love this restaurant and still mourn the closing of the LA spot. The best pastas and a perfect place to have lunch that "feels" like NYC! Very traditional and located very near the theater district, so you can hop in for an early dinner pre-show as well. You really can't go wrong ordering everything on the menu but my last visit, I had them make me a simple pasta with tomatoes and basil.
+
+Score: 0.8776474
+---
+ID: 69039
+Doc Title: review_467680511
+Restaurant Name: Forlini_s_Restaurant
+Title Review: The best. The very best.
+Passage Text:
+If tradition, quality service, and first-rate homemade pasta is your desire, then look no more. This place is simply the best in NYC. I've been here several times after stumbling on it last year. Wish I had found it earlier in my career; it would have made many of my previous visits to NYC even more satisfying to the palate -- and wallet. Love the family atmosphere.
+
+Score: 0.8749021
 ```
 
 笔者决定使用大规模分布式数据处理的保留手段， RabbitMQ + Celery + 多个 Celery worker 。
