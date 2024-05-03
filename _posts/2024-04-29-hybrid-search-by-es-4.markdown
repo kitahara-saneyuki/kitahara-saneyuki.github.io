@@ -141,7 +141,12 @@ Score: 0.8749021
 这里的瓶颈是我们的 docker-compose 自动提供的 ES 集群是单线程的。
 为了节约配置的时间，我们在最初进行原型开发的时候可以直接使用 Elastic Cloud 针对推理优化过的集群。
 
-代码样例： https://github.com/elastic/elasticsearch-labs/blob/main/notebooks/document-chunking/with-index-pipelines.ipynb
+代码样例： [Jupyter Notebook](https://github.com/elastic/elasticsearch-labs/blob/main/notebooks/document-chunking/with-index-pipelines.ipynb)
+
+这一代码样例实现了实验计划的全部功能（除 re-ranking 之外）：
+1.  [x] 语义搜索：验证 Cohere 提供的 embedding 算法和 ElasticSearch 的 ANN 搜索。
+1.  [x] 建立 ES 的导入数据 Ingest Pipeline， chunking 长文到合适规模。
+1.  [x] 导入真实世界测试数据： TripAdvisor 上的 50 万条纽约市餐厅评论
 
 ## 下文预告
 
@@ -161,6 +166,6 @@ Score: 0.8749021
     1.  [ ] 重排序：验证 Cohere 提供的 re-ranking 算法
 1.  [x] 大样本测试：
     1.  [x] 构建本地测试环境
-    1.  [x] 导入实际测试数据
+    1.  [x] 导入真实世界测试数据
 
 本节完成了 2.2 。
