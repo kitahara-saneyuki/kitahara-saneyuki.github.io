@@ -33,7 +33,7 @@ Cohere 不是免费的，如果把我们的 50 万条数据都丢给 Cohere embe
 
 ## 使用 Celery / RabbitMQ 管理大规模数据操作
 
-笔者简单尝试了一下使用 Python 和 ElasticSearch 自带的 `bulk` 工具导入 50 万条评论数据，效果不佳，事实上仅仅导入了 10 万条。
+笔者简单尝试了一下使用 Python 和 ElasticSearch 自带的 `bulk` 工具导入 [50 万条评论数据](https://zenodo.org/records/6583422)，效果不佳，事实上仅仅导入了 10 万条。
 
 输入 `Best pasta in New York` 执行搜索，搜索结果的确令人满意
 
@@ -130,11 +130,18 @@ Score: 0.8749021
 ```
 
 笔者决定使用大规模分布式数据处理的保留手段， RabbitMQ + Celery + 多个 Celery worker 。
-只需要简单编辑一下 `docker-compose.yml` ，新建 Celery worker 的代码和 `Dockerfile` ，即可享受大规模分布式数据处理的乐趣。
+只需要简单编辑一下 [docker-compose.yml](https://github.com/kitahara-saneyuki/elastic-stack-docker-part-one/blob/main/docker-compose.yml#L222-L238) ，新建 [Celery worker 的代码](https://github.com/kitahara-saneyuki/elastic-stack-docker-part-one/blob/main/src/celery_tasks.py) 和 [Dockerfile](https://github.com/kitahara-saneyuki/elastic-stack-docker-part-one/blob/main/Dockerfile) ，即可享受大规模分布式数据处理的乐趣。
 
-### 实验结果
+### 实验结果和代码样例
 
+![RabbitMQ控制台](https://kitahara-saneyuki.github.io/assets/images/2024-04-29-hybrid-search-by-es-4-1.png)
 
+根据 RabbitMQ 控制台，我们在大概 30 分钟的时间里完成了 10% 的数据索引，那么索引整个 50 万条 review 大约需要 5 个小时左右。
+
+这里的瓶颈是我们的 docker-compose 自动提供的 ES 集群是单线程的。
+为了节约配置的时间，我们在最初进行原型开发的时候可以直接使用 Elastic Cloud 针对推理优化过的集群。
+
+代码样例： https://github.com/elastic/elasticsearch-labs/blob/main/notebooks/document-chunking/with-index-pipelines.ipynb
 
 ## 下文预告
 
