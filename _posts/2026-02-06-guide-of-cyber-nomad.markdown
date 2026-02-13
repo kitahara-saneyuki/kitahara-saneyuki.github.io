@@ -53,7 +53,7 @@ published:  true
 
 ### 测试
 
-我们可以使用一些在线工具来测试我们的IP地址是否已经切换到美国住宅IP地址，例如[ping0.cc](https://ping0.cc/)或者[Web Browser Tools](https://webbrowsertools.com/ip-address/)。
+我们可以使用一些在线工具来测试我们的IP地址是否已经切换到美国住宅IP地址，例如[ping0.cc](https://ping0.cc/)，[Web Browser Tools](https://webbrowsertools.com/ip-address/)，或者[IP Score](https://www.ip-score.com/)，检测自己的浏览器信息泄露情况。
 
 此时再次尝试注册真相社交账户，网站会提示你需要提供一个美国手机号进行注册。
 
